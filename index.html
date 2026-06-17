@@ -122,7 +122,7 @@ nav.scrolled{background:rgba(7,9,15,.94);backdrop-filter:blur(20px);padding:12px
 .card-icon svg{width:26px;height:26px}
 .card-title{font-family:var(--font-h);font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:9px}
 .card-desc{font-size:.86rem;color:var(--muted);line-height:1.65;margin-bottom:18px}
-.card-cta{font-family:var(--font-h);font-size:.86rem;font-weight:600;color:var(--green);display:flex;align-items:center;gap:6px}
+.card-cta{font-family:var(--font-h);font-size:.86rem;font-weight:600;color:var(--green);display:flex;align-items:center;gap:6px;text-decoration:none;cursor:pointer}
 .svc-card:hover .card-cta{gap:10px}
 .card-arr{transition:transform .2s}
 .svc-card:hover .card-arr{transform:translateX(4px)}
@@ -407,7 +407,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:70px 0 0}
         </div>
         <div class="card-title">Occupational Health &amp; Medical Screening</div>
         <div class="card-desc">Comprehensive occupational health assessments, medical surveillance, audiometry, spirometry, and biological monitoring for your workforce.</div>
-        <div class="card-cta">Get Quote <span class="card-arr">→</span></div>
+        <a href="#contact" class="card-cta service-quote-btn" data-service="Occupational Health &amp; Medical Screening">Get Quote <span class="card-arr">→</span></a>
       </div>
 
       <!-- Card 2 -->
@@ -418,7 +418,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:70px 0 0}
         </div>
         <div class="card-title">Pre-Employment Medicals</div>
         <div class="card-desc">Thorough pre-placement medical examinations to determine medical fitness for duty — protecting both employer and employee from day one.</div>
-        <div class="card-cta">Get Quote <span class="card-arr">→</span></div>
+        <a href="#contact" class="card-cta service-quote-btn" data-service="Pre-Employment Medicals">Get Quote <span class="card-arr">→</span></a>
       </div>
 
       <!-- Card 3 -->
@@ -429,7 +429,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:70px 0 0}
         </div>
         <div class="card-title">H&amp;S Consultations</div>
         <div class="card-desc">Expert health and safety consultations, risk assessments, legal compliance reviews, and customised safety management system development.</div>
-        <div class="card-cta">Get Quote <span class="card-arr">→</span></div>
+        <a href="#contact" class="card-cta service-quote-btn" data-service="H&amp;S Consultations">Get Quote <span class="card-arr">→</span></a>
       </div>
 
       <!-- Card 4 -->
@@ -440,7 +440,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:70px 0 0}
         </div>
         <div class="card-title">H&amp;S Audits &amp; Safety Files</div>
         <div class="card-desc">Detailed workplace safety audits, compliance inspections, and professionally compiled Health &amp; Safety files as required by OHS legislation.</div>
-        <div class="card-cta">Get Quote <span class="card-arr">→</span></div>
+        <a href="#contact" class="card-cta service-quote-btn" data-service="H&amp;S Audits &amp; Safety Files">Get Quote <span class="card-arr">→</span></a>
       </div>
 
       <!-- Card 5 -->
@@ -451,7 +451,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:70px 0 0}
         </div>
         <div class="card-title">Construction Health &amp; Safety</div>
         <div class="card-desc">Full construction H&amp;S management including site safety plans, baseline risk assessments, and compliance with Construction Regulations 2014.</div>
-        <div class="card-cta">Get Quote <span class="card-arr">→</span></div>
+        <a href="#contact" class="card-cta service-quote-btn" data-service="Construction H&amp;S">Get Quote <span class="card-arr">→</span></a>
       </div>
 
       <!-- Card 6 -->
@@ -462,7 +462,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:70px 0 0}
         </div>
         <div class="card-title">H&amp;S Training Programs</div>
         <div class="card-desc">Accredited training: First Aid, Basic Fire Fighting, Working at Heights, Construction Regulations, COIDA, and Emergency Preparedness.</div>
-        <div class="card-cta">View Courses <span class="card-arr">→</span></div>
+        <a href="#contact" class="card-cta service-quote-btn" data-service="Multiple Services">View Courses <span class="card-arr">→</span></a>
       </div>
 
     </div>
@@ -1222,6 +1222,32 @@ document.getElementById('quoteForm').addEventListener('submit', function(e){
   // Show success
   document.getElementById('formArea').style.display='none';
   document.getElementById('formSuccess').classList.add('show');
+});
+
+// ── SERVICE CARD QUOTE BUTTONS ────────────────────────────────────────────────
+document.querySelectorAll('.service-quote-btn').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    e.preventDefault();
+    const service = btn.dataset.service;
+    const sel = document.getElementById('f_service');
+    if(sel && service){
+      // match option text (handles HTML entities)
+      Array.from(sel.options).forEach(opt=>{
+        if(opt.text.replace(/&/g,'&amp;') === service || opt.text === service.replace(/&amp;/g,'&')) {
+          sel.value = opt.value;
+        }
+      });
+      // fallback — try direct value match
+      if(!sel.value){
+        Array.from(sel.options).forEach(opt=>{
+          if(opt.value === service) sel.value = opt.value;
+        });
+      }
+    }
+    const contact = document.getElementById('contact');
+    if(contact) contact.scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(()=>{ const name = document.getElementById('f_name'); if(name) name.focus(); }, 600);
+  });
 });
 
 // ── SMOOTH SCROLL ─────────────────────────────────────────────────────────────
